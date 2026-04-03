@@ -1,57 +1,47 @@
 import 'package:flutter/material.dart';
 
 class AddContactScreen extends StatefulWidget {
-
   final Function(Map<String, String>) onAdd;
 
-  AddContactScreen({required this.onAdd});
+  const AddContactScreen({super.key, required this.onAdd});
 
   @override
-  _AddContactScreenState createState() => _AddContactScreenState();
+  State<AddContactScreen> createState() => AddContactScreenState();
 }
 
-class _AddContactScreenState extends State<AddContactScreen> {
-
+class AddContactScreenState extends State<AddContactScreen> {
   final TextEditingController nameController = TextEditingController();
+  final TextEditingController lastnameController = TextEditingController();
   final TextEditingController phoneController = TextEditingController();
-  final TextEditingController typeController = TextEditingController();
+  final TextEditingController notesController = TextEditingController();
 
-  String tipoNumero = "Móvil";
+  String contactType = "Personal";
 
   @override
   Widget build(BuildContext context) {
-
     return Scaffold(
-      appBar: AppBar(
-        title: Text("Nuevo contacto"),
-      ),
-
+      appBar: AppBar(title: const Text("Nuevo contacto")),
       body: Padding(
-        padding: EdgeInsets.all(20),
-
-        child: Column(
+        padding: const EdgeInsets.all(20),
+        child: ListView(
           children: [
-
             TextField(
               controller: nameController,
-              decoration: InputDecoration(
-                labelText: "Nombre",
-              ),
+              decoration: const InputDecoration(labelText: "Nombre"),
             ),
-
+            TextField(
+              controller: lastnameController,
+              decoration: const InputDecoration(labelText: "Apellidos"),
+            ),
             TextField(
               controller: phoneController,
-              decoration: InputDecoration(
-                labelText: "Teléfono",
-              ),
+              decoration: const InputDecoration(labelText: "Teléfono"),
+              keyboardType: TextInputType.phone,
             ),
-
             DropdownButtonFormField<String>(
-              value: tipoNumero,
-              decoration: InputDecoration(
-                labelText: "Tipo de número",
-              ),
-              items: ["Móvil", "Casa", "Trabajo"]
+              initialValue: contactType,
+              decoration: const InputDecoration(labelText: "Tipo de contacto"),
+              items: ["Personal", "Trabajo", "Familia"]
                   .map((tipo) => DropdownMenuItem(
                         value: tipo,
                         child: Text(tipo),
@@ -59,25 +49,27 @@ class _AddContactScreenState extends State<AddContactScreen> {
                   .toList(),
               onChanged: (value) {
                 setState(() {
-                  tipoNumero = value!;
+                  contactType = value!;
                 });
               },
             ),
-
-            SizedBox(height: 30),
-
+            TextField(
+              controller: notesController,
+              decoration: const InputDecoration(labelText: "Notas"),
+              maxLines: 3,
+            ),
+            const SizedBox(height: 30),
             ElevatedButton(
-              child: Text("Guardar contacto"),
+              child: const Text("Guardar contacto"),
               onPressed: () {
-
                 final newContact = {
                   "name": nameController.text,
+                  "lastname": lastnameController.text,
                   "phone": phoneController.text,
-                  "type":  tipoNumero,
+                  "type": contactType,
+                  "notes": notesController.text,
                 };
-
                 widget.onAdd(newContact);
-
                 Navigator.pop(context);
               },
             ),

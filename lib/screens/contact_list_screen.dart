@@ -3,12 +3,13 @@ import 'contact_detail_screen.dart';
 import 'add_contact_screen.dart';
 
 class ContactListScreen extends StatefulWidget {
+  const ContactListScreen({super.key});
+
   @override
-  _ContactListScreenState createState() => _ContactListScreenState();
+  State<ContactListScreen> createState() => ContactListScreenState();
 }
 
-class _ContactListScreenState extends State<ContactListScreen> {
-
+class ContactListScreenState extends State<ContactListScreen> {
   List<Map<String, String>> contacts = [];
 
   void addContact(Map<String, String> newContact) {
@@ -20,43 +21,38 @@ class _ContactListScreenState extends State<ContactListScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: Text("Contactos"),
-      ),
-      body: ListView.builder(
-        itemCount: contacts.length,
-        itemBuilder: (context, index) {
-
-          final contact = contacts[index];
-
-          return ListTile(
-            leading: Icon(Icons.person),
-            title: Text(contact["name"]!),
-            subtitle: Text(contact["phone"]!),
-
-            onTap: () {
-              Navigator.push(
-                context,
-                MaterialPageRoute(
-                  builder: (context) => ContactDetailScreen(contact: contact),
-                ),
-              );
-            },
-          );
-        },
-      ),
-
+      appBar: AppBar(title: const Text("Contactos")),
+      body: contacts.isEmpty
+          ? const Center(child: Text("No hay contactos registrados"))
+          : ListView.builder(
+              itemCount: contacts.length,
+              itemBuilder: (context, index) {
+                final contact = contacts[index];
+                return ListTile(
+                  leading: const Icon(Icons.person),
+                  title: Text("${contact["name"]} ${contact["lastname"]}"),
+                  subtitle: Text("${contact["phone"]} • ${contact["type"]}"),
+                  onTap: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) =>
+                            ContactDetailScreen(contact: contact),
+                      ),
+                    );
+                  },
+                );
+              },
+            ),
       floatingActionButton: FloatingActionButton(
-        child: Icon(Icons.add),
+        child: const Icon(Icons.add),
         onPressed: () {
-
           Navigator.push(
             context,
             MaterialPageRoute(
               builder: (context) => AddContactScreen(onAdd: addContact),
             ),
           );
-
         },
       ),
     );

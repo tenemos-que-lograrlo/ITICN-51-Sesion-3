@@ -2,14 +2,16 @@ import 'package:flutter/material.dart';
 import 'screens/contact_list_screen.dart';
 
 void main() {
-  runApp(ContactApp());
+  runApp(const ContactApp());
 }
 
 class ContactApp extends StatelessWidget {
+  const ContactApp({super.key});
+
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'Contactos',
+      title: 'Aplicación de Contactos',
       debugShowCheckedModeBanner: false,
       theme: ThemeData(
         primarySwatch: Colors.blue,
@@ -18,7 +20,7 @@ class ContactApp extends StatelessWidget {
           foregroundColor: Colors.white,
         ),
       ),
-      home: ContactListScreen(),
+      home: const ContactListScreen(),
     );
   }
 }
